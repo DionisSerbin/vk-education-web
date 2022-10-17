@@ -1,0 +1,20 @@
+{% extends 'include/base.html' %}
+{% load static %}
+
+{% block additional_css %}
+<link href="{% static 'css/home_page.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/score.css' %}">
+<link rel="stylesheet" href="{% static 'css/pagination.css' %}">
+{% endblock additional_css %}
+
+{% block content %}
+
+    {% for question in content %}
+    {% include 'include/question.html' with question=question %}
+    {% endfor %}
+
+{% endblock content %}
+
+{% block pagination %}
+{% include 'include/pagination.html' %}
+{% endblock pagination %}

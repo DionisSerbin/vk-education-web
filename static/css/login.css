@@ -1,0 +1,19 @@
+.bg-error {
+    background-color: inherit;
+    color: rgb(175, 2, 2);
+    height: auto;
+    width: fit-content;
+}
+
+.bg-error ul {
+    list-style-type: none;
+}
+
+.jumbotron {
+    padding: 0em;
+}
+
+.in-err {
+    margin-left: 0;
+}
+

@@ -1,0 +1,20 @@
+<div class="col-2 sidebar">
+    <div class="popular-tags" >
+        <h3>Popular Tags</h3>
+        <hr>
+        <ul>
+            {% for tag in tags %}
+            <li><a href="{% url 'tag' tag %}" class="sidebar-link">{{ tag }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="members">
+        <h3>Best Members</h3>
+        <hr>
+        <ul>
+            <li><a href="#" class="sidebar-link">Member 1</a></li>
+            <li><a href="#" class="sidebar-link">Member 2</a></li>
+            <li><a href="#" class="sidebar-link">Member 3</a></li>
+        </ul>
+    </div>
+</div>

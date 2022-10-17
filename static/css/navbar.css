@@ -1,0 +1,9 @@
+.avatar-img {
+  max-width: 50px;
+  max-height: 50px;
+}
+
+.dropdown-item, #navbarDropdown {
+    color: #cfced6;
+    max-width: inherit;
+}
