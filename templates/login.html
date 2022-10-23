@@ -8,9 +8,9 @@
 {% endblock additional_css %}
 
 {% block content %}
-    <h3 class="mt-3">Log In</h3>
+    <h3 class="mt-5 settingsHeader">Log In</h3>
 
-    <div class="jumbotron bg-error">
+    <div class="jumbotron bg-error errorStyle">
         <div class="in-err container">
             <ul>
                 {% for e in errors %}
@@ -22,7 +22,7 @@
         </div>
     </div>
 
-    <form method="POST" enctype="multipart/form-data">
+    <form class="settingsHeader" method="POST" enctype="multipart/form-data">
         <div class="form-group row g-3 align-items-center">
             <div class="col-auto">
                 <label for="login">Login</label>
@@ -39,9 +39,9 @@
                 <input type="password" class="form-control" name="password" id="password" placeholder="Password">
             </div>
         </div>
-        <button type="submit" class="btn btn-success">Login</button>
-    </form>
-    <div class=" row text-left w-100 mt-5">
+        <button type="submit" class="btn btn-success btn1 ">Login</button>
+
         <a href="{% url 'register' %}" class="btn btn1 my-2 my-sm-0">create new account</a>
-    </div>
+
+    </form>
 {% endblock content %}

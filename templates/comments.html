@@ -9,7 +9,7 @@
 {% endblock additional_css %}
 
 {% block content %}
-<div class="question">
+<div class="question settingsHeader" style="margin-bottom: 5%">
     <div class="jumbotron qs-box rounded-lg">
         <div class="row">
             <div class="col-md-4 d-flex flex-column">
@@ -46,7 +46,7 @@
                 <div class="row d-flex flex-row mb-3">
                     <div class="col-md-10 d-flex flex-column flex-md-row justify-content-start">
                         {% for t in question.tags %}
-                        <a class="mx-1" href="{% url 'tag' t %}">{{ t }}</a>
+                        <a class="mx-1" href="{% url 'tag' t %}" style="color: darkgrey">{{ t }}</a>
                         {% endfor %}
                     </div>
                 </div>

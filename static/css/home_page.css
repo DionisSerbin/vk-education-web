@@ -4,39 +4,39 @@ main {
 
 
 code {
-  font-size: 100%;
+    font-size: 100%;
 }
 
 .questions-href > li {
-  display: inline;
+    display: inline;
 }
 
 .question-box {
-  margin-top: 8%;
+    margin-top: 8%;
     border: 1px solid whitesmoke;
-  background-color: whitesmoke;
-  border-radius: 20px;
-  padding: 10px;
+    background-color: whitesmoke;
+    border-radius: 20px;
+    padding: 10px;
 }
 
 .card-img {
     margin-top: 25px;
-  max-width: 200px;
-  max-height: 200px;
+    max-width: 200px;
+    max-height: 200px;
 }
 
 .answer-score {
-  padding: 1em 1em 1em 1em;
+    padding: 1em 1em 1em 1em;
 }
 
 .btn-outline-primary {
-  margin: 1em 1em 1em 1em;
+    margin: 1em 1em 1em 1em;
 }
 
 .btn1 {
     color: #fefefe;
-    background-color: #1c7430;
-    border-color: #1c7430;
+    background-color: #3763f4;
+    border-color: #3763f4;
 }
 
 .btn2 {
@@ -47,7 +47,7 @@ code {
 
 .btn1:hover {
     color: whitesmoke;
-    background-color: #1c7430;
+    background-color: #3763c0;
     border-color: whitesmoke;
 }
 
@@ -59,7 +59,7 @@ code {
 
 .btn1:active, .btn-ask:active {
     color: whitesmoke;
-    background-color: #1c7430;
+    background-color: #3763c0;
     border-color: whitesmoke;
 }
 
@@ -71,14 +71,14 @@ code {
 
 .btn-ask {
     color: #fefefe;
-    background-color: #1c7430;
-    border-color: #1c7430;
+    background-color: #3763f4;
+    border-color: #3763f4;
 }
 
 .btn-ask:hover {
     color: #fefefe;
-    background-color: #1c7430;
-    border-color: #1c7430;
+    background-color: #3763c0;
+    border-color: #3763c0;
 }
 
 .btn1 {
@@ -90,15 +90,31 @@ code {
 }
 
 .question-title {
-  font-size: 20px;
-  font-weight: bold;
+    font-size: 20px;
+    font-weight: bold;
 }
 
 .user-block {
-  margin-right: 0px;
-  color: whitesmoke;
+    margin-right: 0px;
+    color: whitesmoke;
 }
 
 a {
     color: #005cbf;
+}
+
+.settingsHeader {
+    background-color: #2d2c38;
+    border: 1px solid #2d2c38;
+    border-radius: 20px;
+    color: white;
+    padding: 20px;
+}
+
+.errorStyle {
+    background-color: red;
+    border: 1px solid red;
+    border-radius: 20px;
+    color: white;
+    padding: 20px;
 }

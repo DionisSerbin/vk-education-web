@@ -1,9 +1,9 @@
 {% load static %}
-    <div class="card mb-3 answer">
+    <div class="card mb-3 answer" style="background-color: #2d2c38; border-color: #2d2c38">
         <div class="row no-gutters">
             <div class="col-md-4">
                 <img src="{% static 'img/avatar.jpg' %}" class="card-img"
-                    alt="...">
+                    alt="..." style="padding-left: 20px">
 
                 <div class="row scores">
                     <div class="like-score align-self-center">
@@ -29,9 +29,9 @@
             <div class="col">
                 <div class="card-body">
                     <a href="#">
-                        <h5 class="card-title">{{ ans.author }}</h5>
+                        <h5 class="card-title" style="color: darkgrey">{{ ans.author }}</h5>
                     </a>
-                    <p class="card-text question-text">{{ ans.text }}</p>
+                    <p class="card-text question-text" style="color: white">{{ ans.text }}</p>
                     <p class="card-text"><small class="text-muted">Last updated 3 minutes ago</small></p>
                 </div>
 
@@ -40,7 +40,7 @@
                         <div class="form-group form-check">
                             <form action="#" method="POST">
                                 <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                <label class="form-check-label" for="exampleCheck1">Correct</label>
+                                <label class="form-check-label" for="exampleCheck1" style="color: darkgrey">Correct</label>
                             </form>
                         </div>
                     </div>

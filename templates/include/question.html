@@ -1,5 +1,5 @@
 {% load static %}
-<div class="card mb-3 question-box">
+<div class="card mb-3 question-box" style="background-color: #2d2c38; border-color: #2d2c38">
     <div class="row no-gutters">
         <div class="col-2">
             <img src="{% static 'img/avatar.jpg' %}" class="card-img" alt="...">
@@ -25,19 +25,19 @@
         </div>
         <div class="col-md-10">
             <div class="card-body">
-                <a href="{% url 'comments' question.id %}"><h5 class="card-title">{{ question.title }}</h5></a>
-                <p class="card-text">{{ question.text }}</p>
+                <a href="{% url 'comments' question.id %}"><h5 class="card-title" style="color: darkgrey">{{ question.title }}</h5></a>
+                <p class="card-text" style="color: white">{{ question.text }}</p>
                 <p class="card-text"><small class="text-muted">Last updated 3 minutes ago</small></p>
             </div>
             <div class="row d-flex flex-row justify-content-around px-5">
                 <div class="col">
-                    <a href="{% url 'comments' question.id %}">Answers</a>
+                    <a href="{% url 'comments' question.id %}" style="color: darkgrey">Answers</a>
                 </div>
                 <div class="col d-flex flex-row">
                     <div class="row mb-3">
                         <div class="col d-flex flex-column flex-md-row">
                             {% for tag in question.tags %}
-                            <a class="mx-2" href="{% url 'tag' tag %}">{{ tag }}</a>
+                            <a class="mx-2" href="{% url 'tag' tag %}" style="color: darkgrey">{{ tag }}</a>
                             {% endfor %}
                         </div>
 
