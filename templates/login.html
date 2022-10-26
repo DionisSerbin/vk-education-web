@@ -10,12 +10,12 @@
 {% block content %}
     <h3 class="mt-5 settingsHeader">Log In</h3>
 
-    <div class="jumbotron bg-error errorStyle">
-        <div class="in-err container">
+    <div class="jumbotron jumbotron-fluid bg-error errorStyle">
+        <div class="container">
             <ul>
                 {% for e in errors %}
                     <li>
-                        <div class="text-left">{{ e }}</div>
+                        <div class="text-center">{{ e }}</div>
                     </li>
                 {% endfor %}
             </ul>

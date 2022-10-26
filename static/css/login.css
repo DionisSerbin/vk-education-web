@@ -1,8 +1,8 @@
 .bg-error {
-    background-color: inherit;
     color: rgb(175, 2, 2);
     height: auto;
-    width: fit-content;
+    margin-top: 5%;
+    justify-content: right;
 }
 
 .bg-error ul {
@@ -11,9 +11,5 @@
 
 .jumbotron {
     padding: 0em;
-}
-
-.in-err {
-    margin-left: 0;
 }
 
