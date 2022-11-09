@@ -64,15 +64,11 @@ question_comments = [
 ]
 
 
-def is_ajax(request):
-    return request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest"
-
-
 def comments(req, id):
     question = questions[id]
     context['question'] = question
     context.update(pagination(req, 5, question_comments))
-    if is_ajax(req):
+    if req.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest":
         return render(req, 'include/_comments.html', context)
     return render(req, 'comments.html', context)
 
