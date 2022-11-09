@@ -50,8 +50,8 @@
                     <hr class="my-4">
                     <div class="row d-flex flex-row mb-3">
                         <div class="col-md-10 d-flex flex-column flex-md-row justify-content-start">
-                            {% for t in question.tags %}
-                                <a class="mx-1" href="{% url 'tag' t %}" style="color: darkgrey">{{ t }}</a>
+                            {% for t in question.tags.all %}
+                                <a class="mx-1" href="{% url 'tag' t.tag %}" style="color: darkgrey">{{ t.tag }}</a>
                             {% endfor %}
                         </div>
                     </div>

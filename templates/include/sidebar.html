@@ -1,15 +1,16 @@
 {% load static %}
 {% block additional_css %}
-<link href="{% static 'css/sidebar.css' %}" rel="stylesheet">
+    <link href="{% static 'css/sidebar.css' %}" rel="stylesheet">
 {% endblock additional_css %}
 
-<div class="col-3 sidebar" >
-    <div class="popular-tags" >
+<div class="col-3 sidebar">
+    <div class="popular-tags">
         <h3 style="margin-top: 10px">Popular Tags</h3>
         <hr>
         <ul>
-            {% for tag in tags %}
-            <li><a href="{% url 'tag' tag %}" class="sidebar-link" style="color: darkgrey">{{ tag }}</a></li>
+            {% for tag in all_tags %}
+                <li><a href="{% url 'tag' tag.tag %}" class="sidebar-link" style="color: darkgrey">{{ tag.tag }}</a>
+                </li>
             {% endfor %}
         </ul>
     </div>
@@ -17,9 +18,9 @@
         <h3>Best Members</h3>
         <hr>
         <ul>
-            <li><a href="#" class="sidebar-link" style="color: darkgrey">Member 1</a></li>
-            <li><a href="#" class="sidebar-link" style="color: darkgrey">Member 2</a></li>
-            <li><a href="#" class="sidebar-link" style="color: darkgrey">Member 3</a></li>
+            {% for person in best_members %}
+                <li><a href="#" class="sidebar-link" style="color: darkgrey">{{ person.nickname }}| Score: {{ person.score }}</a></li>
+            {% endfor %}
         </ul>
     </div>
 </div>

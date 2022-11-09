@@ -1,28 +1,15 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.core.paginator import Paginator
-from django.http import *
+from django.views.decorators.http import require_POST
+from django.http import Http404
 
-# Create your views here.
+from django.contrib import auth
+from django.urls import reverse
+from django.contrib.auth.decorators import login_required
+from .forms import QuestionForm, AnswerForm, LoginForm, RegistrationForm, UserSettingsForm, ProfileSettingsForm
 
-questions = [
-    {
-        'id': id,
-        'title': 'Card title',
-        'text': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore '
-                'et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut '
-                'aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse '
-                'cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, '
-                'sunt in culpa qui officia deserunt mollit anim id est laborum.',
-        'score': f'{id}',
-        'tags': ['Tag1', 'Tag2'],
-    } for id in range(100)
-]
-
-tags = [f'Tag{i}' for i in range(5)]
-
-context = {
-    'tags': tags,
-}
+from .models import Profile, Question, Answer, Tag, QuestionVote, AnswerVote
 
 
 def pagination(req, page, model):
@@ -32,74 +19,172 @@ def pagination(req, page, model):
         raise Http404
     content = paginator.get_page(page)
     max_page = int(page) + 5
-    contextt = {
+    context = {
         'content': content,
         'max_page': max_page,
     }
-    return contextt
+    return context
 
 
-def index(req):
-    context.update(pagination(req, 5, questions))
-    return render(req, 'index.html', context)
+def index(request):
+    # Index page
+    questions = Question.objects.new()
+    context = pagination(request, 5, questions)
+    return render(request, 'index.html', context)
+
+
+def new_question(request):
+    questions = Question.objects.new()
+    page = pagination(request, 5, questions)
+    return render(request, 'new_questions.html', page)
+
+
+def hot_questions(request):
+    questions = Question.objects.most_popular()
+    page = pagination(request, 5, questions)
+    return render(request, 'hot_questions.html', page)
 
 
 def tag_question(req, tag):
-    tagged_questions = []
-    for q in questions:
-        if tag in q['tags']:
-            tagged_questions.append(q)
-    context.update(pagination(req, 5, tagged_questions))
+    cur_tag = Tag.objects.filter(tag=tag).first()
+    if not cur_tag:
+        raise Http404
+    tag_qs = Question.objects.find_by_tag(tag)
+
+    context = pagination(req, 5, tag_qs)
     context['tag'] = f'{tag}'
+
     return render(req, 'tags.html', context)
-
-
-question_comments = [
-    {
-        'q_id': i,
-        'score': f'{i}',
-        'author': 'user',
-        'text': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    } for i in range(10)
-]
 
 
 def is_ajax(request):
     return request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest"
 
 
-def comments(req, id):
-    question = questions[id]
+def comments(request, question_id):
+    question = Question.objects.find_by_id(question_id)
+    q_answers = Answer.objects.most_popular(question)
+    context = pagination(request, 5, q_answers)
     context['question'] = question
-    context.update(pagination(req, 5, question_comments))
-    if is_ajax(req):
-        return render(req, 'include/_comments.html', context)
-    return render(req, 'comments.html', context)
+    if request.method == 'GET':
+        form = AnswerForm()
+    else:
+        if request.user.is_authenticated:
+            form = AnswerForm(data=request.POST,
+                              request=request, question_id=question_id)
+            if form.is_valid():
+                answer = form.save()
+                return redirect(reverse('comments', kwargs={'question_id': question_id}) + f'#{answer.pk}')
+        else:
+            return redirect(reverse('login') + f'?next={request.path}')
+    context['form'] = form
+    if is_ajax(request):
+        return render(request, 'include/_comments.html', context)
+    return render(request, 'comments.html', context)
 
 
-user = {
-    'login': 'user',
-    'email': 'user@mail.com',
-    'nickname': 'user',
-}
-
-
+@login_required
 def settings(request):
-    context['user'] = user
+    if request.method == 'GET':
+        user_form = UserSettingsForm(instance=request.user)
+        profile_form = ProfileSettingsForm(instance=request.user.profile)
+    else:
+        user_form = UserSettingsForm(
+            data=request.POST,
+            instance=request.user
+        )
+        profile_form = ProfileSettingsForm(
+            data=request.POST,
+            instance=request.user.profile,
+            user=request.user,
+            FILES=request.FILES
+        )
+        if user_form.is_valid() and profile_form.is_valid():
+            user = user_form.save()
+            profile_form.save()
+
+    context = {
+        'user_form': user_form,
+        'profile_form': profile_form,
+    }
     return render(request, 'settings.html', context)
 
 
-errors = ['Incorrect login', 'Wrong password']
+@login_required
+def logout(request):
+    auth.logout(request)
+    if 'next' in request.GET:
+        return redirect(request.GET['next'])
+    else:
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 def login(request):
-    context['errors'] = errors
+    if request.GET.get('next'):
+        next_url = request.GET.get('next')
+    elif request.session.get('next'):
+        next_url = request.session.get('next')
+    else:
+        next_url = ''
+
+    if request.method == 'GET':
+        form = LoginForm()
+    else:
+        form = LoginForm(data=request.POST)
+        if form.is_valid():
+            user = auth.authenticate(request, **form.cleaned_data)
+            if user is not None:
+                auth.login(request, user)
+                if next_url != '':
+                    return redirect(next_url)
+                else:
+                    return redirect(reverse('home'))
+
+    if request.session.get('next') != next_url:
+        request.session['next'] = next_url
+
+    context = {
+        'form': form,
+    }
     return render(request, 'login.html', context)
 
 
 def register(request):
-    return render(request, 'register.html', context)
+    if request.user.is_authenticated:
+        raise Http404
+    if request.method == 'POST':
+        form = RegistrationForm(data=request.POST, FILES=request.FILES)
+        if form.is_valid():
+            user = form.save()
+            raw_password = form.cleaned_data.get('password1')
+            user = auth.authenticate(
+                username=user.username,
+                password=raw_password
+            )
+            if user is not None:
+                auth.login(request, user)
+            else:
+                return redirect(reverse('signup'))
+            return redirect(reverse('home'))
+    else:
+        form = RegistrationForm()
+    return render(request, 'register.html', {'form': form})
 
 
+@login_required
 def ask(request):
-    return render(request, 'ask.html', context)
+    if request.method == 'GET':
+        form = QuestionForm()
+    else:
+        form = QuestionForm(data=request.POST, request=request)
+        if form.is_valid():
+            question = form.save()
+            return redirect(reverse('comments', kwargs={'question_id': question.pk}))
+    return render(request, 'ask.html', {'form': form})
+
+
+@require_POST
+@login_required
+def vote(request):
+    data = request.POST
+    return JsonResponse({'qrating': 42})

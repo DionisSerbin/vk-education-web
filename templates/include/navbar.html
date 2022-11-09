@@ -1,6 +1,6 @@
 {% load static %}
 {% block additional_css %}
-<link href="{% static 'css/home_page.css' %}" rel="stylesheet">
+    <link href="{% static 'css/home_page.css' %}" rel="stylesheet">
 {% endblock additional_css %}
 
 
@@ -30,7 +30,7 @@
                     <a class="nav-link dropdown-toggle " href="#" id="navbarDropdown" role="button"
                        data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">
-                        User
+                        {{ user.profile.nickname }}
                     </a>
                     <div class="dropdown-menu settingsHeader rounded-top" aria-labelledby="navbarDropdown">
                         {% if True %}

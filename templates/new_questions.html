@@ -2,24 +2,21 @@
 {% load static %}
 
 {% block additional_css %}
-    <link href="{% static 'css/home_page.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/home_page.css' %}">
     <link rel="stylesheet" href="{% static 'css/score.css' %}">
     <link rel="stylesheet" href="{% static 'css/pagination.css' %}">
 {% endblock additional_css %}
-{}
+
 {% block content %}
     <div class="justify-content-center row d-inline-flex text-center mt-5 ml-1"
          style="background-color: #2d2c38; border-color: #2d2c38;
-          padding: 2%; border-radius: 20px;">
-        <h2><a class="mr-5" href="{% url 'hot' %}" style="color: white">Hot questions</a></h2>
-        <h2><a href="{% url 'new' %}" style="color: white">New questions</a></h2>
+          padding: 1%; border-radius: 20px;">
+        <h4 class="my-4" style="color: white">New questions
+            <small><a href="{% url 'hot' %}" style="color: darkgrey">Hot questions</a></small>
+        </h4>
     </div>
-    {% for question in content %}
-        {% include 'include/question.html' with question=question %}
+    {% for q in content %}
+        {% include 'include/question.html' with question=q %}
     {% endfor %}
-
-{% endblock content %}
-
-{% block pagination %}
     {% include 'include/pagination.html' %}
-{% endblock pagination %}
+{% endblock content %}
